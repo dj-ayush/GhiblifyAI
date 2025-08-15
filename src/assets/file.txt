@@ -1,0 +1,2131 @@
+now check my complete code and tell me which all  files are waste and good to remove and also tell me which all jsx files need improvement and modification:
+.cta-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 109, 119, 0.1);
+  transition: all 0.3s ease-out;
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+}
+
+.cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  color: #006d77;
+  font-weight: 700;
+  line-height: 1.2;
+  background: linear-gradient(to right, #006d77, #83c5be);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cta-description {
+  font-size: 1.25rem;
+  color: #4a5568;
+  opacity: 0.9;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, #006d77, #83c5be);
+  color: white;
+  font-weight: 600;
+  padding: 0.875rem 2.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.125rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+@media (max-width: 768px) {
+  .cta-container {
+    padding: 2rem;
+  }
+  
+  .cta-title {
+    font-size: 1.75rem;
+  }
+  
+  .cta-description {
+    font-size: 1.1rem;
+  }
+}
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import "./CallToAction.css";
+
+const CallToAction = () => {
+  const navigate = useNavigate();
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.05,
+      boxShadow: "0 10px 25px -5px rgba(0, 109, 119, 0.3)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
+    },
+    tap: {
+      scale: 0.98
+    }
+  };
+
+  return (
+    <motion.div
+      className="cta-container glass-card"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      whileHover={{ 
+        scale: 1.02,
+        boxShadow: "0 8px 32px rgba(0, 109, 119, 0.2)"
+      }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      <div className="cta-content">
+        <motion.h2 
+          className="cta-title"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          Create Your Magical Ghibli Artwork Today
+        </motion.h2>
+        <motion.p
+          className="cta-description"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          Join thousands of artists and Studio Ghibli fans who are creating stunning
+          Miyazaki-inspired artwork with our Ghibli AI generator.
+        </motion.p>
+        <motion.button
+          className="btn-primary"
+          onClick={() => navigate("/create")}
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          Try Ghibli AI For Free
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+};
+
+export default CallToAction;
+import { Component } from 'react';
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    this.setState({ errorInfo });
+    
+    // Log to error tracking service
+    if (typeof window !== 'undefined' && window.trackError) {
+      window.trackError(error, errorInfo);
+    }
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: null, errorInfo: null });
+    if (this.props.onReset) {
+      this.props.onReset();
+    }
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <h3 className="font-bold mb-2">Something went wrong</h3>
+          <details className="mb-2">
+            <summary>Error details</summary>
+            <pre className="text-xs mt-2 overflow-auto">
+              {this.state.error && this.state.error.toString()}
+              <br />
+              {this.state.errorInfo?.componentStack}
+            </pre>
+          </details>
+          <button 
+            onClick={this.handleReset}
+            className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+const ErrorMessage = ({ message, onClose }) => (
+    <div className="absolute top-20 left-1/2 -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50 flex items-center">
+        <span className="block sm:inline">{message}</span>
+        <button onClick={onClose} className="ml-4 text-red-500 hover:text-red-700 font-bold">
+            &times;
+        </button>
+    </div>
+);
+
+export default ErrorMessage;
+// src/components/FaqCard.jsx
+const FaqCard = ({ question, children }) => (
+  <div className="bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-primary/10 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]">
+    <h3 className="text-xl font-semibold mb-3 text-primary">{question}</h3>
+    <p className="text-gray-700 leading-relaxed">{children}</p>
+  </div>
+);
+
+export default FaqCard;
+// src/components/FaqSection.jsx
+import { useState } from 'react';
+import { ChevronDown, ChevronUp, HelpCircle, Sparkles, Image, Type, Download, Shield, Brush, Zap, Palette } from 'lucide-react';
+
+const FaqSection = () => {
+  const [openItems, setOpenItems] = useState([]);
+
+  const faqs = [
+    {
+      question: "What is the Ghibli Art Generator?",
+      answer: "The Ghibli Art Generator is an AI-powered tool that transforms your photos and text descriptions into beautiful Studio Ghibli-inspired artwork. Using advanced machine learning algorithms, we capture the magical aesthetic and artistic style that makes Studio Ghibli films so beloved.",
+      icon: <Sparkles className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "How does the photo-to-art transformation work?",
+      answer: "Simply upload any photo, choose your preferred Ghibli style, and our AI will analyze the composition to recreate it in the Studio Ghibli style. The process preserves the essence of your original image while applying the distinctive watercolor textures and whimsical details characteristic of Ghibli animations.",
+      icon: <Image className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "Can I create art from text descriptions?",
+      answer: "Absolutely! Our text-to-art feature allows you to describe any scene, character, or concept, and the AI will generate a unique Ghibli-style artwork based on your description. You can refine the results with style adjustments and detail enhancements.",
+      icon: <Type className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "What image formats are supported?",
+      answer: "You can upload JPEG, PNG, or WebP images up to 20MB in size. For best results, use high-resolution photos (minimum 1000px on the longest side) with clear details. Output is available in PNG format with transparent background options.",
+      icon: <Download className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "Is my data and artwork secure?",
+      answer: "We prioritize your privacy. Uploaded photos are processed securely and automatically deleted after 24 hours unless you choose to save them. Your generated artworks are private by default, with optional sharing features available.",
+      icon: <Shield className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "Do I need artistic skills to use it?",
+      answer: "Not at all! The generator is designed for everyone, from professional artists to complete beginners. Our intuitive interface and style presets make it easy to create stunning artwork regardless of your experience level.",
+      icon: <Brush className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "Can I use my generated art commercially?",
+      answer: "Yes, you retain full rights to all artwork you generate. You may use it for personal and commercial purposes, including merchandise, books, and digital media. We recommend checking our Terms of Service for any specific restrictions.",
+      icon: <Zap className="h-5 w-5 text-primary" />
+    },
+    {
+      question: "How long does generation take?",
+      answer: "Processing typically takes 15-30 seconds depending on server load and image complexity. High-resolution outputs or complex text prompts may take up to 1 minute. You'll receive an email notification if you leave the page during processing.",
+      icon: <Palette className="h-5 w-5 text-primary" />
+    },
+  ];
+
+  const toggleItem = (index) => {
+    setOpenItems((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
+
+  return (
+    <section className="w-full min-h-screen flex justify-center items-center bg-gradient-to-b from-primary/5 via-accent/5 to-background py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-4xl mx-auto space-y-16">
+        
+        {/* Header */}
+        <div className="text-center space-y-8">
+          <div className="flex flex-col items-center">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg animate-[bounce_3s_ease-in-out_infinite] mb-6">
+              <HelpCircle className="h-12 w-12 text-white animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" strokeWidth={1.5} />
+            </div>
+            
+            <div className="relative inline-flex items-center justify-center mb-6">
+              <HelpCircle className="absolute -left-10 h-6 w-6 text-primary" />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent drop-shadow-md">
+                Frequently Asked Questions
+              </h1>
+              <HelpCircle className="absolute -right-10 h-6 w-6 text-primary" />
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="relative max-w-2xl mx-auto">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/40 to-accent/40 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <p className="relative text-lg text-muted-foreground leading-relaxed bg-background/90 px-6 py-4 rounded-lg">
+                Everything you need to know about creating magical Ghibli-style artwork
+              </p>
+            </div>
+            
+            <div className="w-24 h-1 mx-auto bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+          </div>
+        </div>
+
+        {/* FAQ Items */}
+        <div className="space-y-6">
+          {faqs.map((faq, index) => {
+            const isOpen = openItems.includes(index);
+            return (
+              <div
+                key={index}
+                className={`relative overflow-hidden rounded-xl border border-primary/20 bg-white/95 backdrop-blur-sm shadow-md transition-all duration-300 hover:shadow-lg hover:border-primary/30 ${
+                  isOpen ? 'ring-2 ring-primary/10 bg-white' : ''
+                }`}
+              >
+                {/* Question mark decoration */}
+                <div className="absolute -left-4 top-6 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-white shadow-sm">
+                  <HelpCircle className="h-4 w-4 text-primary" />
+                </div>
+
+                <button
+                  onClick={() => toggleItem(index)}
+                  className={`w-full px-10 py-6 text-left flex items-start gap-6 transition-all duration-300 ${
+                    isOpen ? 'bg-primary/5' : 'hover:bg-primary/5'
+                  }`}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-panel-${index}`}
+                >
+                  <div className={`mt-1 flex-shrink-0 p-2 rounded-lg ${
+                    isOpen ? 'bg-primary/10' : 'bg-primary/5'
+                  }`}>
+                    {faq.icon}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {faq.question}
+                    </h3>
+                  </div>
+                  <div className={`mt-1 flex-shrink-0 p-1 rounded-full transition-all duration-300 ${
+                    isOpen ? 'rotate-180 bg-primary/10' : 'bg-primary/5'
+                  }`}>
+                    {isOpen ? (
+                      <ChevronUp className="h-5 w-5 text-primary" />
+                    ) : (
+                      <ChevronDown className="h-5 w-5 text-primary" />
+                    )}
+                  </div>
+                </button>
+
+                <div
+                  id={`faq-panel-${index}`}
+                  className={`px-10 overflow-hidden transition-all duration-500 ease-in-out ${
+                    isOpen ? 'pb-8' : 'pb-0'
+                  }`}
+                  style={{
+                    maxHeight: isOpen ? '500px' : '0px',
+                    opacity: isOpen ? 1 : 0,
+                  }}
+                >
+                  <div className="pl-14">
+                    <div className="border-l-2 border-primary/20 pl-6">
+                      <p className="text-muted-foreground leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Contact Section */}
+        <div className="text-center">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/40 to-accent/40 rounded-3xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative bg-white/90 backdrop-blur-sm p-10 md:p-14 rounded-3xl shadow-lg border border-primary/10 transition-all duration-300 group-hover:shadow-xl">
+              <div className="space-y-8">
+                <Sparkles className="h-12 w-12 mx-auto text-primary animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />
+                
+                <div className="space-y-4">
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                    Still Have Questions?
+                  </h2>
+                  <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
+                    Our support team is here to help you on your creative journey.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button className="relative overflow-hidden px-8 py-4 bg-gradient-to-r from-primary to-accent text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:brightness-110 group">
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      <span>Contact Support</span>
+                    </span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  </button>
+                  
+                  <button className="px-8 py-4 bg-secondary text-secondary-foreground font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:bg-secondary/90 flex items-center justify-center gap-2">
+                    <span>Join Community</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FaqSection;
+const FeatureCard = ({ icon, title, children }) => (
+    <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg flex flex-col">
+        <div className="bg-orange-900/10 text-orange-900 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+            {icon}
+        </div>
+        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <p className="text-gray-600">{children}</p>
+    </div>
+);
+
+export default FeatureCard;
+// src/components/FeaturesSection.jsx
+import { useEffect, useState } from 'react';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { 
+  Sparkles, Image, Type, Palette, Download, 
+  Zap, Heart, Star, ChevronRight, Wand2 
+} from 'lucide-react';
+
+const FeaturesSection = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const controls = useAnimation();
+  const [counters, setCounters] = useState([0, 0, 0, 0]);
+  const targetValues = [50000, 10000, 99.9, 5];
+  const duration = 2000;
+
+  const features = [
+    {
+      icon: Image,
+      title: 'Photo Transformation',
+      description: 'Upload any photo and watch it transform into stunning Ghibli-style artwork',
+      details: ['High-quality image processing', 'Multiple art styles', 'Preserve original composition']
+    },
+    {
+      icon: Palette,
+      title: 'Artistic Styles',
+      description: 'Choose from various Ghibli-inspired artistic styles for your creations',
+      details: ['Studio Ghibli classics', 'Modern anime twists', 'Custom style blending']
+    },
+    {
+      icon: Type,
+      title: 'Text Integration',
+      description: 'Add beautiful typography to your artwork with our curated font collection',
+      details: ['Japanese calligraphy styles', 'Whimsical handwritten fonts', 'Perfect text placement']
+    },
+    {
+      icon: Download,
+      title: 'High-Res Export',
+      description: 'Download your creations in ultra-high resolution for printing or sharing',
+      details: ['Multiple format options', 'Print-ready files', 'Social media optimized']
+    },
+    {
+      icon: Zap,
+      title: 'Instant Processing',
+      description: 'Get your transformed artwork in seconds with our powerful AI engine',
+      details: ['No waiting queues', 'Real-time previews', 'Batch processing']
+    },
+    {
+      icon: Heart,
+      title: 'Community Gallery',
+      description: 'Showcase your creations in our community gallery and get inspired',
+      details: ['Like and comment', 'Featured artist spots', 'Weekly challenges']
+    }
+  ];
+
+  const stats = [
+    { number: '50K+', label: 'Artworks Created' },
+    { number: '10K+', label: 'Happy Artists' },
+    { number: '99.9%', label: 'Uptime' },
+    { number: '5⭐', label: 'User Rating' }
+  ];
+
+  useEffect(() => {
+    const animateCounters = () => {
+      const startTime = Date.now();
+      
+      const updateCounters = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const newCounters = targetValues.map((target, index) => {
+          if (index === 2) {
+            return progress === 1 ? target : Math.floor(progress * target * 10) / 10;
+          } else if (index === 3) {
+            return progress === 1 ? target : Math.floor(progress * target * 10) / 10;
+          } else {
+            return progress === 1 ? target : Math.floor(progress * target);
+          }
+        });
+        
+        setCounters(newCounters);
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounters);
+        }
+      };
+      
+      requestAnimationFrame(updateCounters);
+    };
+    
+    animateCounters();
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const cardVariants = {
+    rest: { 
+      scale: 1,
+      boxShadow: "0 4px 20px rgba(0, 109, 119, 0.1)"
+    },
+    hover: { 
+      scale: 1.02,
+      boxShadow: "0 8px 30px rgba(0, 109, 119, 0.15)",
+      y: -5
+    }
+  };
+
+  const iconVariants = {
+    rest: { rotate: 0, scale: 1 },
+    hover: { rotate: 5, scale: 1.1 }
+  };
+
+  return (
+    <div className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-primary/5">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-16 md:mb-24"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="inline-flex items-center justify-center bg-primary/10 px-4 py-2 rounded-full mb-4">
+            <Wand2 className="h-5 w-5 text-primary mr-2" />
+            <span className="text-sm font-medium text-primary">Magical Features</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            Transform Your Creativity
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Discover the powerful capabilities that make our Ghibli Art Generator special
+          </p>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div 
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              className="feature-stat-card p-6 text-center relative overflow-hidden"
+              variants={itemVariants}
+              whileHover={{
+                y: -5,
+                boxShadow: "0 10px 25px rgba(0, 109, 119, 0.1)"
+              }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+              <div className="relative z-10">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                  {index === 0 && counters[0].toLocaleString() + '+'}
+                  {index === 1 && counters[1].toLocaleString() + '+'}
+                  {index === 2 && counters[2] + '%'}
+                  {index === 3 && counters[3] + '⭐'}
+                </div>
+                <div className="text-sm md:text-base text-muted-foreground">{stat.label}</div>
+              </div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                className="h-full"
+                variants={itemVariants}
+                onHoverStart={() => setHoveredIndex(index)}
+                onHoverEnd={() => setHoveredIndex(null)}
+              >
+                <motion.div
+                  className="feature-card h-full p-8 flex flex-col"
+                  variants={cardVariants}
+                  initial="rest"
+                  whileHover="hover"
+                >
+                  <motion.div 
+                    className="w-14 h-14 mb-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center relative overflow-hidden"
+                    variants={iconVariants}
+                  >
+                    <Icon className="h-6 w-6 text-white z-10" />
+                    <AnimatePresence>
+                      {hoveredIndex === index && (
+                        <motion.div 
+                          className="absolute inset-0 bg-white/20"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                  <h3 className="text-xl font-bold mb-3 text-foreground">{feature.title}</h3>
+                  <p className="text-muted-foreground mb-6">{feature.description}</p>
+                  <ul className="space-y-3 mt-auto">
+                    {feature.details.map((detail, idx) => (
+                      <motion.li 
+                        key={idx} 
+                        className="flex items-start space-x-3 text-sm text-muted-foreground"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                      >
+                        <Star className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
+                        <span>{detail}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <motion.div 
+                    className="mt-6 flex items-center text-primary font-medium text-sm"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: hoveredIndex === index ? 1 : 0, x: hoveredIndex === index ? 0 : -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <span>Learn more</span>
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Call to Action */}
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Ready to Create Magic?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Join thousands of artists transforming their creativity with our Ghibli Art Generator
+            </p>
+            <motion.div
+              className="inline-flex"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <button className="primary-action-button">
+                <Sparkles className="h-5 w-5 mr-2" />
+                <span>Start Creating Now</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0 opacity-0 hover:opacity-100 transition-opacity duration-500" />
+              </button>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default FeaturesSection;
+import { motion } from 'framer-motion';
+import { FaGithub, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { Canvas } from '@react-three/fiber';
+import { Float, Environment } from '@react-three/drei';
+import * as THREE from 'three';
+import { useState, useEffect } from 'react';
+import ErrorBoundary from './ErrorBoundary';
+import './Footer.scss';
+
+const TotoroModel = () => {
+  const [contextLost, setContextLost] = useState(false);
+
+  useEffect(() => {
+    if (contextLost) {
+      const timer = setTimeout(() => setContextLost(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [contextLost]);
+
+  if (contextLost) return null;
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
+      <mesh>
+        <sphereGeometry args={[0.5, 32, 32]} />
+        <meshStandardMaterial color="#83c5be" />
+      </mesh>
+    </Float>
+  );
+};
+
+const Footer = () => {
+  const socialLinks = [
+    { icon: <FaGithub />, url: 'https://github.com/dj-ayush' },
+    { icon: <FaTwitter />, url: 'https://twitter.com/_7ayush' },
+    { icon: <FaInstagram />, url: 'https://instagram.com/_ayush.ag' },
+    { icon: <FaLinkedin />, url: 'https://linkedin.com/in/ayush7ag' }
+  ];
+
+  const handleContextLost = (e) => {
+    e.preventDefault();
+    console.warn('WebGL context lost, attempting recovery...');
+    return false;
+  };
+
+  return (
+    <motion.footer 
+      className="footer"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      {/* 3D Background Element with ErrorBoundary */}
+      <div className="footer-canvas">
+        <ErrorBoundary fallback={<div className="canvas-fallback">3D content unavailable</div>}>
+          <Canvas
+            onContextLost={handleContextLost}
+            onContextRestored={() => console.log('WebGL context restored')}
+          >
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <TotoroModel />
+            <Environment preset="sunset" />
+          </Canvas>
+        </ErrorBoundary>
+      </div>
+      
+     
+   <div className="footer-content">
+        <motion.div 
+          className="footer-main"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+        >
+          <div className="footer-brand">
+            <div className="logo-container">
+              <Canvas>
+                <ambientLight intensity={0.5} />
+                <pointLight position={[10, 10, 10]} />
+                <Float speed={2} rotationIntensity={0.5}>
+                  <mesh>
+                    <sphereGeometry args={[0.8, 32, 32]} />
+                    <meshStandardMaterial color="#006d77" />
+                  </mesh>
+                </Float>
+              </Canvas>
+            </div>
+            <h3 className="brand-name">Ghibli AI</h3>
+            <p className="brand-tagline">Bringing Studio Ghibli magic to your creations</p>
+          </div>
+          
+          <div className="footer-links">
+            <div className="links-column">
+              <h4>Navigation</h4>
+              <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+                <li><a href="/features">Features</a></li>
+                <li><a href="/gallery">Gallery</a></li>
+                <li><a href="/faq">FAQ</a></li>
+              </ul>
+            </div>
+            
+            <div className="links-column">
+              <h4>Resources</h4>
+              <ul>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">API</a></li>
+                <li><a href="#">Tutorials</a></li>
+                <li><a href="#">Community</a></li>
+              </ul>
+            </div>
+            
+            <div className="links-column">
+              <h4>Legal</h4>
+              <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Cookie Policy</a></li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className="footer-bottom"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+        >
+          <div className="social-links">
+            {socialLinks.map((link, index) => (
+              <motion.a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5, scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {link.icon}
+              </motion.a>
+            ))}
+          </div>
+          
+          <motion.p 
+            className="copyright"
+            whileHover={{ scale: 1.02 }}
+          >
+            © {new Date().getFullYear()} Ghibli AI. All rights reserved.
+          </motion.p>
+          
+          <motion.p 
+            className="made-with-love"
+            whileHover={{ scale: 1.05 }}
+          >
+            Made with <span className="heart">❤️</span> by Ayush Gupta
+          </motion.p>
+        </motion.div>
+      </div>
+    </motion.footer>
+  );
+};
+
+export default Footer;
+// Footer.scss
+.footer {
+  background: linear-gradient(135deg, #006d77 0%, #004a52 100%);
+  color: white;
+  padding: 5rem 0 2rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  
+  &-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    z-index: -1;
+  }
+  
+  &-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  &-main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  
+  &-brand {
+    .logo-container {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #ffffff, #a8dadc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .brand-tagline {
+      font-size: 1rem;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+  }
+  
+  &-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+    
+    h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        margin-bottom: 0.8rem;
+        
+        a {
+          color: rgba(255, 255, 255, 0.8);
+          text-decoration: none;
+          transition: all 0.3s ease;
+          font-size: 0.95rem;
+          
+          &:hover {
+            color: white;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+  }
+  
+  &-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      
+      a {
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-3px);
+        }
+      }
+    }
+    
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+    
+    .made-with-love {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      
+      .heart {
+        display: inline-block;
+        animation: pulse 1.5s infinite;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+// src/components/GalleryCard.jsx
+import { Heart, Download, Eye } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { assets } from '../assets/assets';
+
+const GalleryCard = ({ imageIndex, title, artist, likes, views, category }) => {
+  const imageKey = `grid_0${imageIndex}`;
+  const imageSrc = assets[imageKey] || assets.grid_01; // Fallback to first image
+
+  return (
+    <motion.div 
+      className="rounded-xl overflow-hidden shadow-lg bg-white transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]"
+      whileHover={{ scale: 1.02 }}
+    >
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <img
+          src={imageSrc}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = assets.grid_01; // Fallback to first image
+          }}
+        />
+        
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+          <button className="p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors">
+            <Eye className="h-5 w-5 text-white" />
+          </button>
+          <button className="p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors">
+            <Download className="h-5 w-5 text-white" />
+          </button>
+          <button className="p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors">
+            <Heart className="h-5 w-5 text-white" />
+          </button>
+        </div>
+      </div>
+
+      {/* Card content */}
+      <div className="p-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-1">{title}</h3>
+        <p className="text-gray-600 text-sm mb-3">by {artist}</p>
+        
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3 text-sm text-gray-500">
+            <span className="flex items-center gap-1">
+              <Heart className="h-4 w-4" />
+              {likes}
+            </span>
+            <span className="flex items-center gap-1">
+              <Eye className="h-4 w-4" />
+              {views}
+            </span>
+          </div>
+          <span className="px-2 py-1 rounded-full bg-primary/10 text-primary text-xs">
+            {category}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+export default GalleryCard;
+// src/components/GallerySection.jsx
+import { Heart, Download, Eye, Filter, Wand2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { assets } from '../assets/assets';
+
+const GallerySection = () => {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedStyle, setSelectedStyle] = useState('All Styles');
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  const artworks = [
+    {
+      id: 1,
+      title: 'Enchanted Forest',
+      artist: 'Emma Wilson',
+      likes: 142,
+      views: 1234,
+      category: 'Nature',
+      style: 'Classic Ghibli',
+      featured: true,
+      imageIndex: 1
+    },
+    {
+      id: 2,
+      title: 'Spirited City',
+      artist: 'Liam Chen',
+      likes: 256,
+      views: 1892,
+      category: 'Architecture',
+      style: 'Spirited Away',
+      featured: false,
+      imageIndex: 2
+    },
+    {
+      id: 3,
+      title: 'Mystic Valley',
+      artist: 'Sophia Rodriguez',
+      likes: 198,
+      views: 1456,
+      category: 'Fantasy',
+      style: 'Princess Mononoke',
+      featured: true,
+      imageIndex: 3
+    },
+    {
+      id: 4,
+      title: 'Totoro Garden',
+      artist: 'Oliver Smith',
+      likes: 324,
+      views: 2310,
+      category: 'Nature',
+      style: 'Totoro',
+      featured: false,
+      imageIndex: 4
+    },
+    {
+      id: 5,
+      title: 'Floating Islands',
+      artist: 'Ava Johnson',
+      likes: 287,
+      views: 1765,
+      category: 'Fantasy',
+      style: 'Classic Ghibli',
+      featured: true,
+      imageIndex: 5
+    },
+    {
+      id: 6,
+      title: 'Moonlit Castle',
+      artist: 'Noah Williams',
+      likes: 412,
+      views: 2987,
+      category: 'Architecture',
+      style: 'Spirited Away',
+      featured: false,
+      imageIndex: 6
+    }
+  ];
+
+  const categories = ['All', 'Nature', 'Architecture', 'Fantasy', 'Landscape'];
+  const styles = ['All Styles', 'Classic Ghibli', 'Spirited Away', 'Princess Mononoke', 'Totoro'];
+
+  const filteredArtworks = artworks.filter(artwork => {
+    return (selectedCategory === 'All' || artwork.category === selectedCategory) &&
+           (selectedStyle === 'All Styles' || artwork.style === selectedStyle);
+  });
+
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-primary/5">
+      <div className="max-w-7xl mx-auto">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div 
+            className="inline-flex items-center justify-center bg-primary/10 px-4 py-2 rounded-full mb-6"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Wand2 className="h-5 w-5 text-primary mr-2" />
+            <span className="text-sm font-medium text-primary">Community Gallery</span>
+          </motion.div>
+          
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+            Ghibli Art Gallery
+          </h1>
+          
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Explore magical creations from our community of Ghibli-inspired artists
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="flex flex-col sm:flex-row justify-between items-center mb-16 gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="flex items-center gap-3">
+            <Filter className="h-6 w-6 text-primary" />
+            <span className="text-base font-medium text-gray-800">Filter Artworks</span>
+          </div>
+          
+          <div className="flex flex-wrap gap-3">
+            <motion.div
+              whileHover={{ y: -2 }}
+              className="relative"
+            >
+              <select 
+                className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-full px-5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer appearance-none pr-8"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                {categories.map((category) => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ y: -2 }}
+              className="relative"
+            >
+              <select 
+                className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-full px-5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer appearance-none pr-8"
+                value={selectedStyle}
+                onChange={(e) => setSelectedStyle(e.target.value)}
+              >
+                {styles.map((style) => (
+                  <option key={style} value={style}>{style}</option>
+                ))}
+              </select>
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+          <AnimatePresence>
+            {filteredArtworks.map((artwork) => {
+              const imageKey = `grid_0${artwork.imageIndex}`;
+              const imageSrc = assets[imageKey] || assets.grid_01;
+              
+              return (
+                <motion.div
+                  key={artwork.id}
+                  className="relative"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.5 }}
+                  layout
+                >
+                  {artwork.featured && (
+                    <div className="absolute -top-2 -right-2 z-10 bg-yellow-400 text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                      Featured
+                    </div>
+                  )}
+                  
+                  <motion.div
+                    className="ghibli-card overflow-hidden group bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
+                    whileHover={{ y: -8 }}
+                    onHoverStart={() => setHoveredCard(artwork.id)}
+                    onHoverEnd={() => setHoveredCard(null)}
+                  >
+                    <div className="relative aspect-square flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={imageSrc}
+                        alt={artwork.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = assets.grid_01;
+                        }}
+                      />
+                      
+                      <motion.div 
+                        className="absolute inset-0 bg-black/50 flex items-center justify-center gap-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: hoveredCard === artwork.id ? 1 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <motion.button 
+                          className="p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all"
+                          whileHover={{ scale: 1.15, backgroundColor: 'rgba(255,255,255,0.4)' }}
+                        >
+                          <Eye className="h-5 w-5 text-white" />
+                        </motion.button>
+                        <motion.button 
+                          className="p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all"
+                          whileHover={{ scale: 1.15, backgroundColor: 'rgba(255,255,255,0.4)' }}
+                        >
+                          <Download className="h-5 w-5 text-white" />
+                        </motion.button>
+                        <motion.button 
+                          className="p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all"
+                          whileHover={{ scale: 1.15, backgroundColor: 'rgba(255,255,255,0.4)' }}
+                        >
+                          <Heart className="h-5 w-5 text-white" />
+                        </motion.button>
+                      </motion.div>
+                    </div>
+
+                    <div className="p-5 md:p-6 flex-1 flex flex-col">
+                      <div className="flex-1">
+                        <h3 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{artwork.title}</h3>
+                        <p className="text-gray-600 mb-4">by {artwork.artist}</p>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-sm mt-4">
+                        <div className="flex items-center gap-4">
+                          <span className="flex items-center gap-1 text-gray-500">
+                            <Heart className="h-4 w-4 text-rose-500" />
+                            <span>{artwork.likes}</span>
+                          </span>
+                          <span className="flex items-center gap-1 text-gray-500">
+                            <Eye className="h-4 w-4 text-blue-500" />
+                            <span>{artwork.views}</span>
+                          </span>
+                        </div>
+                        <div className="flex gap-2">
+                          <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                            {artwork.category}
+                          </span>
+                          <span className="px-2.5 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
+                            {artwork.style}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+
+        <motion.div 
+          className="text-center mt-20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="relative max-w-2xl mx-auto">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-lg rounded-full scale-x-150 transform -z-10"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1.5 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            />
+            
+            <div className="px-10 py-8 mx-auto">
+              <div className="space-y-5">
+                <motion.h2 
+                  className="text-2xl font-bold text-gray-900"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  Ready to Create Ghibli Magic?
+                </motion.h2>
+                <motion.p 
+                  className="text-gray-600 text-lg"
+                  whileHover={{ scale: 1.01 }}
+                >
+                  Transform your imagination into stunning artwork
+                </motion.p>
+                
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link 
+                    to="/create" 
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-base font-bold rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Wand2 className="h-5 w-5" />
+                    <span>Start Creating</span>
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default GallerySection;
+// src/components/GalleryStories.jsx
+import { motion } from 'framer-motion';
+import { assets } from "../assets/assets";
+
+const GalleryStories = () => {
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 mb-10">
+            <motion.div 
+                className="bg-white rounded-lg shadow-lg p-6 sm:p-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Mountain Lake Ghibli Transformation</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="rounded-lg overflow-hidden shadow-md">
+                        <img
+                            src={assets.grid_01}
+                            alt="Mountain Lake Before"
+                            className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = assets.grid_02;
+                            }}
+                        />
+                    </div>
+                    <div className="rounded-lg overflow-hidden shadow-md">
+                        <img
+                            src={assets.grid_02}
+                            alt="Mountain Lake After"
+                            className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover"
+                        />
+                    </div>
+                </div>
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    See how our Ghibli AI generator transforms ordinary landscapes into breathtaking Studio Ghibli worlds with authentic Ghibli art style and magical details in every Ghibli image.
+                </p>
+            </motion.div>
+
+            <motion.div 
+                className="bg-white rounded-lg shadow-lg p-6 sm:p-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Urban Scene Ghibli AI Transformation</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="rounded-lg overflow-hidden shadow-md">
+                        <img
+                            src={assets.grid_03}
+                            alt="Urban Scene Before"
+                            className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover"
+                        />
+                    </div>
+                    <div className="rounded-lg overflow-hidden shadow-md">
+                        <img
+                            src={assets.grid_04}
+                            alt="Urban Scene After"
+                            className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover"
+                        />
+                    </div>
+                </div>
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    Watch city streets transform into charming Studio Ghibli towns with magical details using our Ghibli generator. Every building and element captures the iconic Ghibli art aesthetic in these Ghibli images.
+                </p>
+            </motion.div>
+        </div>
+    );
+};
+
+export default GalleryStories;
+import { Image, Palette, Users, Wand2 } from "lucide-react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
+import { assets } from "../assets/assets";
+
+const GhibliSteps = () => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [controls, inView]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  return (
+    <div className="bg-gradient-to-b from-gray-50 to-gray-100 py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Premium Header */}
+        <motion.div
+          className="text-center mb-16 md:mb-20"
+          initial={{ opacity: 0, y: -20 }}
+          animate={controls}
+          variants={containerVariants}
+        >
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-6 text-[#2d3748]"
+            variants={itemVariants}
+          >
+            Ready to Create Ghibli Magic?
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl text-[#4a5568] max-w-3xl mx-auto"
+            variants={itemVariants}
+          >
+            Transform your imagination into stunning artwork
+          </motion.p>
+        </motion.div>
+
+        {/* Main Content Section */}
+        <motion.div 
+          className="flex flex-col lg:flex-row items-center gap-12 mb-24"
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={containerVariants}
+        >
+          {/* Image Section */}
+          <motion.div 
+            className="w-full lg:w-1/2"
+            variants={itemVariants}
+          >
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src={assets.step1}
+                alt="Ghibli Art Transformation"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <h3 className="text-2xl font-bold mb-2">Before → After</h3>
+                <p className="opacity-90">See your photo transform into Ghibli magic</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Text Content */}
+          <motion.div 
+            className="w-full lg:w-1/2"
+            variants={itemVariants}
+          >
+            <motion.h3 
+              className="text-3xl md:text-4xl font-bold text-[#2d3748] mb-6"
+              variants={itemVariants}
+            >
+              Photo to Ghibli Art
+            </motion.h3>
+            
+            <motion.p 
+              className="text-[#4a5568] text-lg mb-8 leading-relaxed"
+              variants={itemVariants}
+            >
+              Transform any photo into beautiful Studio Ghibli-style artwork with our advanced AI. 
+              Simply upload your image and watch as we apply the magical Ghibli aesthetic.
+            </motion.p>
+            
+            <motion.ul 
+              className="space-y-8"
+              variants={containerVariants}
+            >
+              <motion.li 
+                className="flex items-start"
+                variants={itemVariants}
+              >
+                <div className="p-3 rounded-full mr-4 bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
+                  <Image size={24} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-xl text-[#2d3748] mb-2">Simple AI Process</h3>
+                  <p className="text-[#4a5568]">
+                    Our AI understands your vision and applies authentic Ghibli styling automatically.
+                  </p>
+                </div>
+              </motion.li>
+              
+              <motion.li 
+                className="flex items-start"
+                variants={itemVariants}
+              >
+                <div className="p-3 rounded-full mr-4 bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
+                  <Palette size={24} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-xl text-[#2d3748] mb-2">Style Selection</h3>
+                  <p className="text-[#4a5568]">
+                    Choose from various Ghibli film styles like Spirited Away or Princess Mononoke.
+                  </p>
+                </div>
+              </motion.li>
+              
+              <motion.li 
+                className="flex items-start"
+                variants={itemVariants}
+              >
+                <div className="p-3 rounded-full mr-4 bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
+                  <Users size={24} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-xl text-[#2d3748] mb-2">Character Integration</h3>
+                  <p className="text-[#4a5568]">
+                    Insert yourself or pets into the Ghibli universe while maintaining recognizable features.
+                  </p>
+                </div>
+              </motion.li>
+            </motion.ul>
+          </motion.div>
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div 
+          className="mb-24"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div
+              className="bg-white rounded-2xl shadow-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src={assets.step2} 
+                  alt="Multiple Art Styles"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <Palette size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2d3748]">Multiple Art Styles</h3>
+                </div>
+                <p className="text-[#4a5568]">
+                  Choose from distinct Ghibli art styles from different films to match your vision.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl shadow-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src={assets.step3} 
+                  alt="High Resolution Output"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <Image size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2d3748]">High Resolution</h3>
+                </div>
+                <p className="text-[#4a5568]">
+                  Download your artwork in ultra-high resolution suitable for printing and sharing.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl shadow-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src={assets.step4} 
+                  alt="Quick Processing"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <Wand2 size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2d3748]">Quick Processing</h3>
+                </div>
+                <p className="text-[#4a5568]">
+                  Get your transformed artwork in minutes with our powerful cloud-based AI engine.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl shadow-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <div className="aspect-video overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+                <img 
+                  src={assets.step1} 
+                  alt="TLC-G Transformer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <Users size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2d3748]">TLC-G Transformer</h3>
+                </div>
+                <p className="text-[#4a5568]">
+                  Our specialized animation transformer creates authentic Ghibli-style results.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Before/After Section */}
+        <motion.div 
+          className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <div className="flex flex-col lg:flex-row">
+            <div className="lg:w-1/2 p-12">
+              <h3 className="text-2xl font-bold text-[#2d3748] mb-6">Before → After</h3>
+              <p className="text-[#4a5568] mb-8 text-lg">
+                See how ordinary photos transform into extraordinary Ghibli-style artwork with our AI-powered tools.
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <div className="aspect-square overflow-hidden rounded-xl mb-3 shadow-md">
+                    <img src={assets.step1} alt="Before" className="w-full h-full object-cover" />
+                  </div>
+                  <p className="text-sm text-center text-[#718096] font-medium">Original Photo</p>
+                </div>
+                <div>
+                  <div className="aspect-square overflow-hidden rounded-xl mb-3 shadow-md">
+                    <img src={assets.step2} alt="After" className="w-full h-full object-cover" />
+                  </div>
+                  <p className="text-sm text-center text-[#718096] font-medium">Ghibli Art</p>
+                </div>
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="aspect-[4/3] w-full h-full">
+                <img 
+                  src={assets.step3} 
+                  alt="Transformation Process" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
+export default GhibliSteps;
+// src/components/GhibliStyleDropdown.jsx
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+
+const GhibliStyleDropdown = ({ value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const styles = [
+    { id: 'classic-ghibli', name: 'Classic Ghibli' },
+    { id: 'spirited-away', name: 'Spirited Away' },
+    { id: 'totoro', name: 'My Neighbor Totoro' },
+    { id: 'mononoke', name: 'Princess Mononoke' },
+    { id: 'howl', name: 'Howl\'s Moving Castle' },
+    { id: 'kiki', name: 'Kiki\'s Delivery Service' },
+    { id: 'anime', name: 'Anime Style' },
+    { id: 'cinematic', name: 'Cinematic' },
+    { id: 'watercolor', name: 'Watercolor' },
+    { id: 'sketch', name: 'Sketch' },
+    { id: 'pastel', name: 'Pastel' },
+    { id: 'vintage', name: 'Vintage' }
+  ];
+
+  const selectedStyle = styles.find(style => style.id === value) || styles[0];
+
+  return (
+    <div className="ghibli-dropdown-container">
+      <motion.button
+        className="ghibli-dropdown-button"
+        onClick={() => setIsOpen(!isOpen)}
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+      >
+        <span>{selectedStyle.name}</span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown size={18} />
+        </motion.div>
+      </motion.button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="ghibli-dropdown-menu"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            style={{ maxHeight: '300px', overflowY: 'auto' }}
+          >
+            {styles.map((style) => (
+              <motion.div
+                key={style.id}
+                className={`dropdown-item ${value === style.id ? 'active' : ''}`}
+                onClick={() => {
+                  onChange(style.id);
+                  setIsOpen(false);
+                }}
+                whileHover={{ backgroundColor: 'rgba(131, 197, 190, 0.1)' }}
+              >
+                {style.name}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default GhibliStyleDropdown;
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Text3D } from '@react-three/drei';
+import ErrorBoundary from './ErrorBoundary';
+import './Header.scss';
+
+const Logo3D = () => {
+  return (
+    <ErrorBoundary fallback={<div className="text-2xl font-bold text-primary">Ghibli AI</div>}>
+      <Canvas>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        <Text3D
+          font="/fonts/helvetiker_regular.typeface.json"
+          size={0.8}
+          height={0.2}
+          curveSegments={12}
+          bevelEnabled
+          bevelThickness={0.02}
+          bevelSize={0.02}
+          bevelOffset={0}
+          bevelSegments={5}
+        >
+          Ghibli AI
+          <meshStandardMaterial color="#006d77" />
+        </Text3D>
+        <OrbitControls enableZoom={false} autoRotate />
+      </Canvas>
+    </ErrorBoundary>
+  );
+};
+
+const Header = () => {
+  return (
+    <header className="header">
+      <nav className="navbar">
+        <Link to="/" className="logo">
+          <div className="logo-3d">
+            <Logo3D />
+          </div>
+        </Link>
+        
+        <div className="nav-links">
+          <motion.div whileHover={{ scale: 1.1 }}>
+            <Link to="/">Home</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1 }}>
+            <Link to="/create">Create</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1 }}>
+            <Link to="/features">Features</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1 }}>
+            <Link to="/gallery">Gallery</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1 }}>
+            <Link to="/faq">FAQ</Link>
+          </motion.div>
+        </div>
+      </nav>
+    </header>
+  );
+};
+
+export default Header;
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: rgba(255, 253, 245, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  
+  .logo-3d {
+    width: 120px;
+    height: 60px;
+  }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  
+  a {
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    
+    &:hover::after {
+      width: 100%;
+    }
+  }
+}
+import {useNavigate} from "react-router-dom";
+
+const HeroSection = () => {
+    const navigate = useNavigate();
+    return (
+        <div className="container mx-auto flex flex-col items-center justify-center text-center py-20 lg:py-40">
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4 leading-tight">
+                Transform Your Photos into <br /> Ghibli Art with Ghibli AI
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mb-8">
+                Experience the magic of Studio Ghibli's artistic style with our AI-powered Ghibli image generator tool.
+            </p>
+            <button onClick={() => navigate('/create')} className="bg-orange-900 text-white font-bold py-3 px-8 rounded-lg hover:bg-orange-800 transition-transform transform hover:scale-105">
+                Try Ghibli AI
+            </button>
+        </div>
+    );
+};
+
+export default HeroSection;
+import Header from './Header';
+import Footer from './Footer';
+
+const Layout = ({ children }) => {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default Layout;
+const Spinner = () => (
+    <div className="flex justify-center items-center h-full">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
+    </div>
+);
+
+export default Spinner;
+const UploadIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`text-gray-400 mb-4 mx-auto`}
+    >
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+        <polyline points="21 15 16 10 5 21"></polyline>
+    </svg>
+);
+
+export default UploadIcon;
+how can i make the all components aligned properly, give me steps to align all the above components in such a way that it looks good in single web page and no other components intersect each other and smooth looking maitainging the same theme .
