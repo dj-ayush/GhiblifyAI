@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5f291f05-8eba-4e4d-8e11-544f6a3e6bc3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/GhbliapiApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/client/StabilityAIClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/config/FeignConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/controller/GenerationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/dto/StabilityAIResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/dto/TextGenerationRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/dto/TextToImageRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/ayush/ghbliapi/service/GhibliArtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="318c8Npp98QCnIXRrbM1uxvr8jx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GhbliapiApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Chrome downlods/ghbliapi/ghbliapi"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="GhbliapiApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="STABILITY_API_KEY" value="sk-N1VOzMtIquH9WFGzcFJlLFUQEFr0DBX5eB5nRLlAwVzcaOmW" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="in.ayush.ghbliapi.GhbliapiApplication" />
+      <module name="ghbliapi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="in.ayush.ghbliapi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GhbliapiApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f291f05-8eba-4e4d-8e11-544f6a3e6bc3" name="Changes" comment="" />
+      <created>1754908979433</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1754908979433</updated>
+    </task>
+    <servers />
+  </component>
+</project>
