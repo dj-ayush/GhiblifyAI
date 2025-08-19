@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+/* Add this to your existing index.css */
+@layer base {
+  :root {
+    --primary: #006d77;
+    --primary-light: #83c5be;
+    --accent: #ffddd2;
+    --background: #fffdf5;
+  }
+
+  section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    section {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    section {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+}
+@layer utilities {
+  .container {
+    max-width: 80rem; /* Equivalent to max-w-7xl */
+    margin-left: auto; /* Equivalent to mx-auto */
+    margin-right: auto;
+  }
+}
